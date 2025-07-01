@@ -1,0 +1,79 @@
+:root {
+  --bg: #121212;
+  --fg: #fff;
+  --sidebar-bg: #1e1e1e;
+  --accent-purple: #3b00ff;
+  --accent-red: #e0606a;
+  --accent-gray: #ccc;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; background: var(--bg); color: var(--fg); font-family: sans-serif; }
+
+.container { display: flex; height: 100vh; }
+
+.sidebar {
+  width: 280px;
+  background: var(--sidebar-bg);
+  padding: 20px;
+  overflow-y: auto;
+}
+.sidebar h2 {
+  font-size: 14px; letter-spacing: 1px;
+}
+.logo-preview {
+  background: #fff; padding: 10px; margin: 10px 0; text-align: center;
+}
+.logo-preview img { max-width: 100%; height: auto; }
+
+.section { margin-top: 24px; }
+.section h3 {
+  font-size: 12px; text-transform: uppercase; margin-bottom: 8px;
+}
+
+.pixel-types { display: flex; gap: 10px; }
+.pixel-btn {
+  width: 32px; height: 32px;
+  background: #444; border: none; cursor: pointer; border-radius: 4px;
+  position: relative;
+}
+.pixel-btn.active { outline: 2px solid var(--accent-purple); }
+.pixel-btn::before { content: ''; position: absolute; top: 8px; left: 8px; }
+
+/* icons */
+.pixel-btn[data-type="square"]::before {
+  width: 16px; height: 16px; background: var(--accent-red);
+}
+.pixel-btn[data-type="circle"]::before {
+  width: 16px; height: 16px; background: var(--accent-purple);
+  border-radius: 50%;
+}
+.pixel-btn[data-type="dot"]::before {
+  width: 16px; height: 16px; background: var(--accent-red);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px var(--accent-purple);
+}
+.pixel-btn[data-type="ring"]::before {
+  width: 16px; height: 16px; border: 4px solid var(--accent-purple);
+  border-radius: 50%;
+}
+
+.slider-wrap {
+  display: flex; align-items: center; gap: 10px; margin: 10px 0;
+}
+.slider-wrap input[type="range"] { flex: 1; }
+
+.canvas-wrap {
+  flex: 1;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg);
+}
+#pixelCanvas { background: var(--bg); }
+.overlay-text {
+  position: absolute;
+  font: bold 72px monospace;
+  color: #fff;
+  pointer-events: none;
+  text-transform: lowercase;
+}
