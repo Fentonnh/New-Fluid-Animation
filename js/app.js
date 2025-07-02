@@ -22,20 +22,18 @@ let time      = 0;
 // Constants
 const BASE_SIZE = 800;
 
-// Draw one pass of the fluid‐halftone shapes
+// draw a full halftone pass
 function drawHalftone(t) {
   const cell = BASE_SIZE / gridSize;
   ctx.lineWidth = cell * 0.05;
-
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++) {
       const cx = (x + 0.5) * cell;
       const cy = (y + 0.5) * cell;
       let size = cell * 0.6;
       if (dynamic) {
-        size = cell * (0.2 + 0.6 * Math.abs(Math.sin((x + y) / 2 + t)));
+        size = cell * (0.2 + 0.6 * Math.abs(Math.sin((x+y)/2 + t)));
       }
-
       const fg = invert ? '#3b00ff' : '#e0606a';
       const bg = invert ? '#e0606a' : '#ccc';
       ctx.fillStyle   = fg;
@@ -43,15 +41,13 @@ function drawHalftone(t) {
 
       switch (pixelType) {
         case 'square':
-          ctx.fillRect(cx - size/2, cy - size/2, size, size);
+          ctx.fillRect(cx-size/2, cy-size/2, size, size);
           break;
-
         case 'circle':
           ctx.beginPath();
           ctx.arc(cx, cy, size/2, 0, Math.PI*2);
           ctx.fill();
           break;
-
         case 'dot':
           ctx.beginPath();
           ctx.arc(cx, cy, size/2, 0, Math.PI*2);
@@ -61,7 +57,6 @@ function drawHalftone(t) {
           ctx.arc(cx, cy, size/4, 0, Math.PI*2);
           ctx.fill();
           break;
-
         case 'ring':
           ctx.beginPath();
           ctx.arc(cx, cy, size/2, 0, Math.PI*2);
@@ -72,97 +67,91 @@ function drawHalftone(t) {
   }
 }
 
-// Main draw loop
-function drawFrame(t) {
-  // 1) Background fill
+// main draw loop
+function drawFrame() {
+  // reset composite
+  ctx.globalCompositeOperation = 'source-over';
+
+  // 1) clear & fill background
   ctx.fillStyle = invert ? '#fff' : '#3b00ff';
   ctx.fillRect(0, 0, BASE_SIZE, BASE_SIZE);
 
-  // 2) Draw the static ring grid
+  // 2) static ring grid
   const cell = BASE_SIZE / gridSize;
   ctx.lineWidth   = cell * 0.1;
   ctx.strokeStyle = invert ? '#3b00ff' : '#000';
   ctx.fillStyle   = invert ? '#3b00ff' : '#3b00ff';
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++) {
-      const cx = (x + 0.5) * cell;
-      const cy = (y + 0.5) * cell;
+      const cx = (x+0.5)*cell, cy=(y+0.5)*cell;
       ctx.beginPath();
-      ctx.arc(cx, cy, cell * 0.4, 0, Math.PI*2);
+      ctx.arc(cx, cy, cell*0.4, 0, Math.PI*2);
       ctx.fill();
       ctx.stroke();
     }
   }
 
-  // 3) Always draw the fluid‐halftone background
-  ctx.globalCompositeOperation = 'source-over';
-  drawHalftone(t);
+  // 3) always draw background halftone shapes
+  drawHalftone(time);
 
-  // 4) If there's text, overlay a **second pass** of your halftone 
-  //    but only inside the white text you draw.
+  // 4) if text, overlay a second halftone pass clipped to your letters
   if (textValue.trim()) {
     ctx.save();
-    // draw the text in white
+    // draw text in white to define the mask
     ctx.font = 'bold 200px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#fff';
     ctx.fillText(textValue, BASE_SIZE/2, BASE_SIZE/2);
 
-    // now draw halftone only where that text was
+    // clip to text
     ctx.globalCompositeOperation = 'source-atop';
-    drawHalftone(t);
+    drawHalftone(time);
     ctx.restore();
   }
+
+  time += 0.02;
+  requestAnimationFrame(drawFrame);
 }
 
-// Export logic
+// export function
 function exportPNG() {
-  const exportCanvas = document.createElement('canvas');
-  exportCanvas.width  = BASE_SIZE * scale;
-  exportCanvas.height = BASE_SIZE * scale;
-  const ec = exportCanvas.getContext('2d');
-  ec.drawImage(canvas, 0, 0,
-               exportCanvas.width, exportCanvas.height);
-  exportCanvas.toBlob(blob => {
-    const link = document.createElement('a');
-    link.download = 'halftone-text.png';
-    link.href = URL.createObjectURL(blob);
-    link.click();
+  const out = document.createElement('canvas');
+  out.width  = BASE_SIZE*scale;
+  out.height = BASE_SIZE*scale;
+  const otc = out.getContext('2d');
+  otc.drawImage(canvas,0,0,out.width,out.height);
+  out.toBlob(b=>{
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(b);
+    a.download='halftone-text.png';
+    a.click();
   });
 }
 
-// Animation & setup
+// init
 function setup() {
   canvas.width  = BASE_SIZE;
   canvas.height = BASE_SIZE;
 
-  // text input
-  textInput.oninput = e => textValue = e.target.value;
+  textInput.oninput  = e => textValue = e.target.value;
+  gridSlider.oninput = () => gridSize = +gridSlider.value;
+  invCheck.onchange  = () => invert   = invCheck.checked;
+  dynCheck.onchange  = () => dynamic  = dynCheck.checked;
+  scaleSel.onchange  = () => { scale=+scaleSel.value; resLabel.textContent=`${BASE_SIZE*scale}×${BASE_SIZE*scale}px, PNG`; };
+  expBtn.onclick     = exportPNG;
 
-  // pixel‐type buttons
-  pixelBtns.forEach(btn => {
-    if (btn.classList.contains('active')) pixelType = btn.dataset.type;
-    btn.onclick = () => {
-      pixelBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      pixelType = btn.dataset.type;
+  pixelBtns.forEach(b=>{
+    if(b.classList.contains('active')) pixelType=b.dataset.type;
+    b.onclick=()=>{
+      pixelBtns.forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      pixelType=b.dataset.type;
     };
   });
 
-  // other controls
-  gridSlider.oninput = () => gridSize = +gridSlider.value;
-  invCheck.onchange   = () => invert   = invCheck.checked;
-  dynCheck.onchange   = () => dynamic  = dynCheck.checked;
-  scaleSel.onchange   = () => { scale = +scaleSel.value; updateRes(); };
-  expBtn.onclick      = exportPNG;
-
-  updateRes();
-  requestAnimationFrame(function frame(ts){ drawFrame(time); time+=0.02; requestAnimationFrame(frame); });
-}
-
-function updateRes() {
-  resLabel.textContent = `${BASE_SIZE * scale} × ${BASE_SIZE * scale}px, PNG`;
+  resLabel.textContent = `${BASE_SIZE*scale} × ${BASE_SIZE*scale}px, PNG`;
+  requestAnimationFrame(drawFrame);
 }
 
 window.onload = setup;
