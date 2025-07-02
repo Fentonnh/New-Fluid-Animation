@@ -13,8 +13,12 @@
       <h2>EDIT PRO</h2>
 
       <div class="logo-preview">
-        <img src="assets/logo.png" alt="Logo Preview">
+        <img src="" alt="Logo Preview" id="logoPreview">
       </div>
+      <label class="upload-btn">
+        Change Logo
+        <input type="file" id="logoInput" accept="image/*">
+      </label>
 
       <div class="section">
         <h3>PIXELS</h3>
@@ -35,7 +39,6 @@
           </svg>
           <input type="range" id="gridSize" min="4" max="64" value="16">
         </div>
-
         <label class="chk">
           <input type="checkbox" id="invert">
           <span>Invert</span>
