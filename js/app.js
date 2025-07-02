@@ -22,7 +22,7 @@ let time      = 0;
 // Constants
 const BASE_SIZE = 800;
 
-// Setup
+// Setup (runs after DOM is loaded)
 function setup() {
   canvas.width  = BASE_SIZE;
   canvas.height = BASE_SIZE;
@@ -67,13 +67,13 @@ function animate() {
 function drawFrame(t) {
   const cell = BASE_SIZE / gridSize;
 
-  // 1) Background rings
+  // 1) Draw background rings
   ctx.fillStyle = invert ? '#fff' : '#3b00ff';
   ctx.fillRect(0, 0, BASE_SIZE, BASE_SIZE);
-
   ctx.lineWidth   = cell * 0.1;
   ctx.strokeStyle = invert ? '#3b00ff' : '#000';
   ctx.fillStyle   = invert ? '#3b00ff' : '#3b00ff';
+
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++) {
       const cx = (x + 0.5) * cell;
@@ -85,22 +85,18 @@ function drawFrame(t) {
     }
   }
 
-  // 2) If user has typed text, draw halftone **inside** that text
+  // 2) If text is present, mask halftone into text
   if (textValue.trim()) {
     ctx.save();
-
-    // draw the text mask (white)
     ctx.font = 'bold 200px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#fff';
     ctx.fillText(textValue, BASE_SIZE/2, BASE_SIZE/2);
 
-    // composite so that upcoming shapes only appear where this text was
     ctx.globalCompositeOperation = 'source-atop';
-
-    // draw your fluid‐halftone shapes
     ctx.lineWidth = cell * 0.05;
+
     for (let y = 0; y < gridSize; y++) {
       for (let x = 0; x < gridSize; x++) {
         const cx = (x + 0.5) * cell;
@@ -142,7 +138,6 @@ function drawFrame(t) {
       }
     }
 
-    // restore normal composition
     ctx.restore();
   }
 }
@@ -154,7 +149,7 @@ function exportPNG() {
   exportCanvas.height = BASE_SIZE * scale;
   const ec = exportCanvas.getContext('2d');
   ec.drawImage(canvas, 0, 0,
-                exportCanvas.width, exportCanvas.height);
+               exportCanvas.width, exportCanvas.height);
   exportCanvas.toBlob(blob => {
     const link = document.createElement('a');
     link.download = 'halftone-text.png';
@@ -163,5 +158,5 @@ function exportPNG() {
   });
 }
 
-// Kick off
+// Kick off after DOM is ready
 window.onload = setup;
