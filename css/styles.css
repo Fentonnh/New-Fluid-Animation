@@ -17,48 +17,27 @@ html, body {
 
 .container { display: flex; height: 100vh; }
 
-/* ── Sidebar ────────────────────────────────────────────────────── */
+/* ── Sidebar ───────────────────────────────────────────────── */
 .sidebar {
   width: 280px;
   background: var(--sidebar-bg);
   padding: 20px;
   font-size: 14px;
 }
-.sidebar h2 {
-  letter-spacing: 1px;
-  font-weight: normal;
-  margin-bottom: 12px;
-}
 
-/* ── Logo Preview + Upload ─────────────────────────────────────── */
-.logo-preview {
-  background: #111;
+/* Text input */
+.text-input {
   width: 100%;
-  padding-top: 75%; /* placeholder ratio */
-  position: relative;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 8px;
-}
-.logo-preview img {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  object-fit: contain;
-}
-.upload-btn {
-  display: inline-block;
-  background: var(--accent-purple);
-  color: #fff;
-  padding: 6px 12px;
+  padding: 8px;
+  border: none;
   border-radius: 4px;
-  font-size: 12px;
-  cursor: pointer;
+  background: #2a2a2a;
+  color: #fff;
+  font-size: 14px;
   margin-bottom: 24px;
 }
-.upload-btn input { display: none; }
 
-/* ── Sections ───────────────────────────────────────────────────── */
+/* Section titles */
 .section + .section { margin-top: 32px; }
 .section h3 {
   font-size: 12px;
@@ -67,7 +46,7 @@ html, body {
   color: #aaa;
 }
 
-/* ── Pixel‐Shape Buttons ────────────────────────────────────────── */
+/* ── Pixel‐Shape Buttons ────────────────────────────────────── */
 .pixel-types {
   display: flex;
   gap: 12px;
@@ -84,7 +63,7 @@ html, body {
 .pixel-btn:hover { outline: 2px solid #555; }
 .pixel-btn.active { outline: 2px solid var(--accent-purple); }
 
-/* common pseudo setup */
+/* Shape icons */
 .pixel-btn::before,
 .pixel-btn::after {
   content: '';
@@ -92,21 +71,14 @@ html, body {
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
 }
-
-/* square */
 .pixel-btn.square::before {
-  width: 16px; height: 16px;
-  background: var(--accent-red);
+  width: 16px; height: 16px; background: var(--accent-red);
 }
-
-/* circle */
 .pixel-btn.circle::before {
   width: 16px; height: 16px;
   background: var(--accent-red);
   border-radius: 50%;
 }
-
-/* dot (outer + inner) */
 .pixel-btn.dot::before {
   width: 16px; height: 16px;
   background: var(--accent-red);
@@ -117,8 +89,6 @@ html, body {
   background: var(--accent-gray);
   border-radius: 50%;
 }
-
-/* ring */
 .pixel-btn.ring::before {
   width: 18px; height: 18px;
   border: 2px solid var(--accent-red);
@@ -126,7 +96,7 @@ html, body {
   background: transparent;
 }
 
-/* ── Slider + Icon ─────────────────────────────────────────────── */
+/* ── Slider + Icon ───────────────────────────────────────── */
 .slider-wrap {
   display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
 }
@@ -141,10 +111,11 @@ html, body {
 .slider-wrap input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 14px; height: 14px; border-radius: 50%;
-  background: var(--accent-purple); cursor: pointer; margin-top: -5px;
+  background: var(--accent-purple);
+  cursor: pointer; margin-top: -5px;
 }
 
-/* ── Custom Checkboxes ─────────────────────────────────────────── */
+/* ── Custom Checkboxes ───────────────────────────────────── */
 .chk {
   display: flex; align-items: center; gap: 8px;
   font-size: 14px; margin-bottom: 12px; cursor: pointer;
@@ -167,7 +138,7 @@ html, body {
 }
 .chk span { user-select: none; }
 
-/* ── Export Button ────────────────────────────────────────────── */
+/* ── Export Button ──────────────────────────────────────── */
 .export-btn {
   display: block; width: 100%; padding: 8px 0; margin: 8px 0;
   background: #fff; color: #000; text-align: center;
@@ -175,22 +146,15 @@ html, body {
 }
 .export-btn:hover { background: #eee; }
 
-/* ── Resolution Label ──────────────────────────────────────────── */
+/* ── Resolution Label ───────────────────────────────────── */
 #resolution {
   font-size: 12px; color: #888; text-align: center;
 }
 
-/* ── Canvas Area ───────────────────────────────────────────────── */
+/* ── Canvas Area ───────────────────────────────────────── */
 .canvas-wrap {
   flex: 1; position: relative;
   display: flex; align-items: center; justify-content: center;
   background: var(--bg);
 }
 #pixelCanvas { background: var(--bg); }
-.overlay-text {
-  position: absolute;
-  font: bold 72px monospace;
-  color: var(--fg);
-  pointer-events: none;
-  text-transform: lowercase;
-}
