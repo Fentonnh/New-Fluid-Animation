@@ -1,4 +1,4 @@
-// ── DOM refs ─────────────────────────────────────────────────────────
+// DOM refs
 const canvas     = document.getElementById('pixelCanvas');
 const ctx        = canvas.getContext('2d');
 const gridSlider = document.getElementById('gridSize');
@@ -11,7 +11,6 @@ const pixelBtns  = document.querySelectorAll('.pixel-btn');
 const logoInput  = document.getElementById('logoInput');
 const logoImg    = document.getElementById('logoPreview');
 
-// ── App state ────────────────────────────────────────────────────────
 let gridSize  = +gridSlider.value;
 let pixelType = 'ring';
 let invert    = false;
@@ -19,20 +18,18 @@ let dynamic   = true;
 let scale     = +scaleSel.value;
 let time      = 0;
 
-// ── Constants ─────────────────────────────────────────────────────────
 const BASE_SIZE = 800;
 
-// ── Initialize UI & start anim ───────────────────────────────────────
 function setup() {
   canvas.width  = BASE_SIZE;
   canvas.height = BASE_SIZE;
 
-  // file‐picker → preview
+  // logo upload
   logoInput.onchange = e => {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = () => { logoImg.src = reader.result; };
+    reader.onload = () => logoImg.src = reader.result;
     reader.readAsDataURL(file);
   };
 
@@ -48,8 +45,8 @@ function setup() {
 
   // other controls
   gridSlider.oninput = () => gridSize = +gridSlider.value;
-  invCheck.onchange   = () => invert = invCheck.checked;
-  dynCheck.onchange   = () => dynamic = dynCheck.checked;
+  invCheck.onchange   = () => invert   = invCheck.checked;
+  dynCheck.onchange   = () => dynamic  = dynCheck.checked;
   scaleSel.onchange   = () => { scale = +scaleSel.value; updateResLabel(); };
   expBtn.onclick      = exportPNG;
 
@@ -61,14 +58,12 @@ function updateResLabel() {
   resLabel.textContent = `${BASE_SIZE * scale} × ${BASE_SIZE * scale}px, PNG`;
 }
 
-// ── Animation loop ───────────────────────────────────────────────────
 function animate() {
   drawFrame(time);
   time += 0.02;
   requestAnimationFrame(animate);
 }
 
-// ── Draw one frame ───────────────────────────────────────────────────
 function drawFrame(t) {
   const cell = BASE_SIZE / gridSize;
 
@@ -91,7 +86,7 @@ function drawFrame(t) {
     }
   }
 
-  // fluid‐halftone overlay
+  // fluid halftone overlay
   ctx.lineWidth = cell * 0.05;
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++) {
@@ -99,7 +94,7 @@ function drawFrame(t) {
       const cy = (y + 0.5) * cell;
       let size = cell * 0.6;
       if (dynamic) {
-        size = cell * (0.2 + 0.6 * Math.abs(Math.sin((x + y) / 2 + t)));
+        size = cell * (0.2 + 0.6 * Math.abs(Math.sin((x + y)/2 + t)));
       }
 
       const fg = invert ? '#3b00ff' : '#e0606a';
@@ -135,7 +130,6 @@ function drawFrame(t) {
   }
 }
 
-// ── Export PNG ─────────────────────────────────────────────────────────
 function exportPNG() {
   const exportCanvas = document.createElement('canvas');
   exportCanvas.width  = BASE_SIZE * scale;
