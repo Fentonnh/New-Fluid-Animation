@@ -1,50 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ruri Pixel – Fluid Halftone</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
   <div class="container">
+
     <!-- ─── Sidebar / Toolbar ─────────────────────────────────────── -->
     <aside class="sidebar">
-      <h2>Settings</h2>
+      <h2>EDIT PRO</h2>
 
       <div class="logo-preview">
-        <img src="" alt="Logo Preview" id="logoPreview">
+        <img id="logoPreview" src="" alt="Logo Preview" />
       </div>
       <label class="upload-btn">
         Change Logo
-        <input type="file" id="logoInput" accept="image/*">
+        <input type="file" id="logoInput" accept="image/*" />
       </label>
 
       <div class="section">
         <h3>PIXELS</h3>
         <div class="pixel-types">
-          <button class="pixel-btn type-0" data-type="square"></button>
-          <button class="pixel-btn type-1" data-type="circle"></button>
-          <button class="pixel-btn type-2" data-type="dot"></button>
-          <button class="pixel-btn type-3" data-type="ring"></button>
-          <button class="pixel-btn type-4" data-type="square"></button>
-          <button class="pixel-btn type-5" data-type="circle"></button>
-          <button class="pixel-btn type-6" data-type="dot"></button>
-          <button class="pixel-btn type-7 active" data-type="ring"></button>
+          <button class="pixel-btn square"  data-type="square"></button>
+          <button class="pixel-btn circle"  data-type="circle"></button>
+          <button class="pixel-btn dot"     data-type="dot"></button>
+          <button class="pixel-btn ring"    data-type="ring"></button>
         </div>
 
         <div class="slider-wrap">
           <svg class="grid-icon" viewBox="0 0 24 24">
-            <path d="M3 3h4v4H3V3zm6 0h4v4h-4V3zm6 0h4v4h-4V3zM3 9h4v4H3V9zm6 0h4v4h-4V9zm6 0h4v4h-4V9zM3 15h4v4H3v-4zm6 15h4v4h-4v-4zm6 15h4v4h-4v-4z" fill="currentColor"/>
+            <path
+              d="M3 3h4v4H3V3zm6 0h4v4h-4V3zm6 0h4v4h-4V3zM3 9h4v4H3V9zm6 0h4v4h-4V9zm6 0h4v4h-4V9zM3 15h4v4H3v-4zm6 15h4v4h-4v-4zm6 15h4v4h-4v-4z"
+              fill="currentColor"
+            />
           </svg>
-          <input type="range" id="gridSize" min="4" max="64" value="16">
+          <input type="range" id="gridSize" min="4" max="64" value="16" />
         </div>
+
         <label class="chk">
-          <input type="checkbox" id="invert">
+          <input type="checkbox" id="invert" />
           <span>Invert</span>
         </label>
         <label class="chk">
-          <input type="checkbox" id="dynamic" checked>
+          <input type="checkbox" id="dynamic" checked />
           <span>Dynamic Size</span>
         </label>
       </div>
@@ -64,6 +65,7 @@
     <!-- ─── Canvas ──────────────────────────────────────────────────── -->
     <main class="canvas-wrap">
       <canvas id="pixelCanvas"></canvas>
+      <div class="overlay-text">ruri pixel</div>
     </main>
   </div>
 
