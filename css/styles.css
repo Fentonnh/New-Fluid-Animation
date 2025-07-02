@@ -17,7 +17,7 @@ html, body {
 
 .container { display: flex; height: 100vh; }
 
-/* ─── Sidebar ────────────────────────────────────────────────────── */
+/* ── Sidebar ────────────────────────────────────────────────────── */
 .sidebar {
   width: 280px;
   background: var(--sidebar-bg);
@@ -29,10 +29,12 @@ html, body {
   font-weight: normal;
   margin-bottom: 12px;
 }
+
+/* ── Logo Preview + Upload ─────────────────────────────────────── */
 .logo-preview {
   background: #111;
   width: 100%;
-  padding-top: 75%; /* 4:3 placeholder ratio */
+  padding-top: 75%; /* placeholder ratio */
   position: relative;
   border-radius: 8px;
   overflow: hidden;
@@ -54,11 +56,9 @@ html, body {
   cursor: pointer;
   margin-bottom: 24px;
 }
-.upload-btn input {
-  display: none;
-}
+.upload-btn input { display: none; }
 
-/* ─── Sections ───────────────────────────────────────────────────── */
+/* ── Sections ───────────────────────────────────────────────────── */
 .section + .section { margin-top: 32px; }
 .section h3 {
   font-size: 12px;
@@ -67,11 +67,10 @@ html, body {
   color: #aaa;
 }
 
-/* ─── Pixel-buttons ──────────────────────────────────────────────── */
+/* ── Pixel‐Shape Buttons ────────────────────────────────────────── */
 .pixel-types {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  display: flex;
+  gap: 12px;
   margin-bottom: 16px;
 }
 .pixel-btn {
@@ -81,26 +80,53 @@ html, body {
   border-radius: 6px;
   cursor: pointer;
   position: relative;
-  overflow: hidden;
 }
 .pixel-btn:hover { outline: 2px solid #555; }
 .pixel-btn.active { outline: 2px solid var(--accent-purple); }
-.pixel-btn::before {
-  content: '';
-  display: grid;
-  grid-template: repeat(2, 1fr) / repeat(2, 1fr);
-  width: 100%; height: 100%;
-}
-.pixel-btn.type-0::before { background: linear-gradient(to br, var(--accent-red) 50%, var(--accent-purple) 50%); }
-.pixel-btn.type-1::before { background: linear-gradient(to bl, var(--accent-red) 50%, var(--accent-purple) 50%); }
-.pixel-btn.type-2::before { background: linear-gradient(to tr, var(--accent-red) 50%, var(--accent-purple) 50%); }
-.pixel-btn.type-3::before { background: linear-gradient(to tl, var(--accent-red) 50%, var(--accent-purple) 50%); }
-.pixel-btn.type-4::before { background: linear-gradient(to r,  var(--accent-red) 50%, var(--accent-purple) 50%); }
-.pixel-btn.type-5::before { background: linear-gradient(to t,  var(--accent-red) 50%, var(--accent-purple) 50%); }
-.pixel-btn.type-6::before { background: linear-gradient(to l,  var(--accent-red) 50%, var(--accent-purple) 50%); }
-.pixel-btn.type-7::before { background: linear-gradient(to b,  var(--accent-red) 50%, var(--accent-purple) 50%); }
 
-/* ─── Slider + Icon ─────────────────────────────────────────────── */
+/* common pseudo setup */
+.pixel-btn::before,
+.pixel-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* square */
+.pixel-btn.square::before {
+  width: 16px; height: 16px;
+  background: var(--accent-red);
+}
+
+/* circle */
+.pixel-btn.circle::before {
+  width: 16px; height: 16px;
+  background: var(--accent-red);
+  border-radius: 50%;
+}
+
+/* dot (outer + inner) */
+.pixel-btn.dot::before {
+  width: 16px; height: 16px;
+  background: var(--accent-red);
+  border-radius: 50%;
+}
+.pixel-btn.dot::after {
+  width: 6px; height: 6px;
+  background: var(--accent-gray);
+  border-radius: 50%;
+}
+
+/* ring */
+.pixel-btn.ring::before {
+  width: 18px; height: 18px;
+  border: 2px solid var(--accent-red);
+  border-radius: 50%;
+  background: transparent;
+}
+
+/* ── Slider + Icon ─────────────────────────────────────────────── */
 .slider-wrap {
   display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
 }
@@ -118,14 +144,13 @@ html, body {
   background: var(--accent-purple); cursor: pointer; margin-top: -5px;
 }
 
-/* ─── Custom Checkboxes ─────────────────────────────────────────── */
+/* ── Custom Checkboxes ─────────────────────────────────────────── */
 .chk {
   display: flex; align-items: center; gap: 8px;
   font-size: 14px; margin-bottom: 12px; cursor: pointer;
 }
 .chk input {
-  appearance: none;
-  width: 18px; height: 18px;
+  appearance: none; width: 18px; height: 18px;
   border: 2px solid #555; border-radius: 4px;
   position: relative;
 }
@@ -142,21 +167,20 @@ html, body {
 }
 .chk span { user-select: none; }
 
-/* ─── Export Button ────────────────────────────────────────────── */
+/* ── Export Button ────────────────────────────────────────────── */
 .export-btn {
   display: block; width: 100%; padding: 8px 0; margin: 8px 0;
   background: #fff; color: #000; text-align: center;
-  font-weight: bold; border: none; border-radius: 4px;
-  cursor: pointer;
+  font-weight: bold; border: none; border-radius: 4px; cursor: pointer;
 }
 .export-btn:hover { background: #eee; }
 
-/* ─── Resolution Label ──────────────────────────────────────────── */
+/* ── Resolution Label ──────────────────────────────────────────── */
 #resolution {
   font-size: 12px; color: #888; text-align: center;
 }
 
-/* ─── Canvas Area ───────────────────────────────────────────────── */
+/* ── Canvas Area ───────────────────────────────────────────────── */
 .canvas-wrap {
   flex: 1; position: relative;
   display: flex; align-items: center; justify-content: center;
